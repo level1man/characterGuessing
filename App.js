@@ -1,61 +1,96 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity ,ImageBackground} from 'react-native';
+import images from './data.js'
+
 
 export default function App() {
   const [initialState, setInitialState] = useState([
-                                           [1, 0, 1, 0],
-                                           [0, 0, 0, 0],
-                                           [0, 0, 0, 0],
-                                           [0, 0, 0, 0],
-                                           [0, 0, 0, 0],
-  ]);
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]]);
+  const [questionImages, setQuestionImages] = useState(images[0])
 
+  const handlePress = () =>{
+    let i = Math.floor(Math.random()*5);
+    let j = Math.floor(Math.random()*4);
+    let photoNum = Math.floor(Math.random()*7);
+    let img = images[photoNum];
+    setQuestionImages(img)
+    let array = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0]
+    ];
+    array[i][j] = 1;
+    setInitialState(array);
+  }
 
   return (
     <View style={styles.container}>
       <Text>What is it?</Text>
 
-      <View style={{backgroundColor: "yellow"}}>
+      <View>
+       <ImageBackground source={questionImages} style={styles.image}>
 
         <View style={{flexDirection: "row"}}>
-          {initialState[0][0] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
-          {initialState[0][1] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
-          {initialState[0][2] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
-          {initialState[0][3] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
+          {initialState[0].map((item, index)=> {
+            if(item === 0 ) {
+              return <View style={styles.tile} key={index} />
+            } else {
+              return <View style={styles.revealed} key={index} />
+            }
+          })}
         </View>
 
         <View style={{flexDirection: "row"}}>
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
+          {initialState[1].map((item, index)=> {
+            if(item === 0 ) {
+              return <View style={styles.tile} key={index} />
+            } else {
+              return <View style={styles.revealed} key={index} />
+            }
+          })}
         </View>
 
         <View style={{flexDirection: "row"}}>
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
+          {initialState[2].map((item, index)=> {
+            if(item === 0 ) {
+              return <View style={styles.tile} key={index} />
+            } else {
+              return <View style={styles.revealed} key={index} />
+            }
+          })}
         </View>
 
         <View style={{flexDirection: "row"}}>
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
+          {initialState[3].map((item, index)=> {
+            if(item === 0 ) {
+              return <View style={styles.tile} key={index} />
+            } else {
+              return <View style={styles.revealed} key={index} />
+            }
+          })}
         </View>
 
         <View style={{flexDirection: "row"}}>
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
+          {initialState[4].map((item, index)=> {
+            if(item === 0 ) {
+              return <View style={styles.tile} key={index} />
+            } else {
+              return <View style={styles.revealed} key={index} />
+            }
+          })}
         </View>
+       </ImageBackground>
       </View>
 
       <TouchableOpacity
-        onPress={()=>alert('Hello world')}
+        onPress={()=>handlePress()}
         style ={styles.button}>
         <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
@@ -91,5 +126,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 80,
     height: 80,
-  }
+  },
+
+  image: {
+    // flex: 1,
+    resizeMode: "cover",
+    justifyContent: "center"
+  },
 });
