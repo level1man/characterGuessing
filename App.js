@@ -1,8 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 export default function App() {
+  const [initialState, setInitialState] = useState([
+                                           [1, 0, 1, 0],
+                                           [0, 0, 0, 0],
+                                           [0, 0, 0, 0],
+                                           [0, 0, 0, 0],
+                                           [0, 0, 0, 0],
+  ]);
+
+
   return (
     <View style={styles.container}>
       <Text>What is it?</Text>
@@ -10,10 +19,10 @@ export default function App() {
       <View style={{backgroundColor: "yellow"}}>
 
         <View style={{flexDirection: "row"}}>
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
-          <View style={styles.tile} />
+          {initialState[0][0] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
+          {initialState[0][1] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
+          {initialState[0][2] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
+          {initialState[0][3] === 0 ? <View style={styles.tile} /> : <View style={styles.revealed} /> }
         </View>
 
         <View style={{flexDirection: "row"}}>
@@ -73,7 +82,14 @@ const styles = StyleSheet.create({
   },
   tile: {
     borderWidth: 1,
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
+    backgroundColor:'green',
+  },
+
+  revealed: {
+    borderWidth: 1,
+    width: 80,
+    height: 80,
   }
 });
