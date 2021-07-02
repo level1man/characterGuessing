@@ -17,7 +17,7 @@ export default function Game() {
     let i = Math.floor(Math.random()*5);
     let j = Math.floor(Math.random()*4);
     let photoNum = Math.floor(Math.random()*7);
-    let img = images[photoNum];
+    let img = images[photoNum].url;
     setQuestionImages(img)
     let array = [
       [0, 0, 0, 0],
