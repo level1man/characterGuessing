@@ -13,12 +13,16 @@ export default function Game() {
     [0, 0, 0, 0]]);
   const [questionImages, setQuestionImages] = useState(images[0])
 
-  const handlePress = () =>{
+  useEffect(()=>{
+    initBoard();
+  },[])
+
+  const initBoard = () =>{
     let i = Math.floor(Math.random()*5);
     let j = Math.floor(Math.random()*4);
     let photoNum = Math.floor(Math.random()*7);
     let img = images[photoNum].url;
-    setQuestionImages(img)
+    setQuestionImages(img);
     let array = [
       [0, 0, 0, 0],
       [0, 0, 0, 0],
@@ -26,6 +30,14 @@ export default function Game() {
       [0, 0, 0, 0],
       [0, 0, 0, 0]
     ];
+    array[i][j] = 1;
+    setInitialState(array);
+  }
+
+  const revealed = () => {
+    let i = Math.floor(Math.random()*5);
+    let j = Math.floor(Math.random()*4);
+    let array = initialState.slice(0);
     array[i][j] = 1;
     setInitialState(array);
   }
@@ -90,9 +102,9 @@ export default function Game() {
       </View>
 
       <TouchableOpacity
-        onPress={()=>handlePress()}
+        onPress={()=>revealed()}
         style ={styles.button}>
-        <Text style={styles.buttonText}>Start</Text>
+        <Text style={styles.buttonText}>Reavel MORE</Text>
         </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
