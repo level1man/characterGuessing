@@ -17,6 +17,7 @@ export default function Game() {
   const [ifAnswer, setIfAnswer] = useState(false);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
+  const [usedImages, setUsedImages] = useState({});
 
   useEffect(()=>{
     initBoard();
@@ -25,12 +26,21 @@ export default function Game() {
   const initBoard = () =>{
     let photoNum = Math.floor(Math.random()*7);
     let img = images[photoNum];
+    let used = {...usedImages};
 
     var board = emptyBoard.map(function(arr) {
       return arr.slice();
     });
-    setQuestionImages(img);
-    revealed(board);
+
+    if(!used[photoNum]) {
+      used[photoNum] = true;
+      setUsedImages(used);
+      setQuestionImages(img);
+      revealed(board);
+    } else {
+      initBoard();
+      return;
+    }
   }
 
   const revealed = (board) => {
