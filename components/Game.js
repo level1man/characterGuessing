@@ -3,42 +3,41 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity ,ImageBackground} from 'react-native';
 import images from '../data.js'
 
+const emptyBoard = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 0]];
 
 export default function Game() {
-  const [initialState, setInitialState] = useState([
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]]);
-  const [questionImages, setQuestionImages] = useState(images[0])
+  const [initialState, setInitialState] = useState(emptyBoard);
+  const [questionImages, setQuestionImages] = useState(images[0]);
+  const [currentRevealed, setCurrentRevealed] = useState({});
 
   useEffect(()=>{
     initBoard();
   },[])
 
   const initBoard = () =>{
-    let i = Math.floor(Math.random()*5);
-    let j = Math.floor(Math.random()*4);
     let photoNum = Math.floor(Math.random()*7);
     let img = images[photoNum].url;
     setQuestionImages(img);
-    let array = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ];
-    array[i][j] = 1;
-    setInitialState(array);
+    revealed(emptyBoard);
   }
 
-  const revealed = () => {
+  const revealed = (board) => {
     let i = Math.floor(Math.random()*5);
     let j = Math.floor(Math.random()*4);
-    let array = initialState.slice(0);
+    let array = board.slice(0);
     array[i][j] = 1;
+    if(!currentRevealed[[i,j]]){
+      let obj = {...currentRevealed}
+      obj[[i,j]] = true;
+      setCurrentRevealed(obj);
+    } else {
+      revealed(board);
+    }
     setInitialState(array);
   }
 
@@ -102,7 +101,7 @@ export default function Game() {
       </View>
 
       <TouchableOpacity
-        onPress={()=>revealed()}
+        onPress={()=>revealed(initialState)}
         style ={styles.button}>
         <Text style={styles.buttonText}>Reavel MORE</Text>
         </TouchableOpacity>
