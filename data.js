@@ -12,7 +12,7 @@ const images = [
     url: require('./assets/anna.jpeg'),
   },
   {
-    name: 'Doc Mcstufiins',
+    name: 'Doc Mcstuffins',
     url: require('./assets/mcstuffins.jpeg'),
   },
   {

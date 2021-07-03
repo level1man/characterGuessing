@@ -15,6 +15,8 @@ export default function Game() {
   const [questionImages, setQuestionImages] = useState(images[0]);
   const [currentRevealed, setCurrentRevealed] = useState({});
   const [ifAnswer, setIfAnswer] = useState(false);
+  const [score, setScore] = useState(0);
+  const [questionNumber, setQuestionNumber] = useState(1);
 
   useEffect(()=>{
     initBoard();
@@ -23,21 +25,28 @@ export default function Game() {
   const initBoard = () =>{
     let photoNum = Math.floor(Math.random()*7);
     let img = images[photoNum];
+
+    var board = emptyBoard.map(function(arr) {
+      return arr.slice();
+    });
     setQuestionImages(img);
-    revealed(emptyBoard);
+    revealed(board);
   }
 
   const revealed = (board) => {
+    let obj = {...currentRevealed}
     let i = Math.floor(Math.random()*5);
     let j = Math.floor(Math.random()*4);
-    let array = board.slice(0);
+    var array = board.map(function(arr) {
+      return arr.slice();
+    });
     array[i][j] = 1;
     if(!currentRevealed[[i,j]]){
-      let obj = {...currentRevealed}
       obj[[i,j]] = true;
       setCurrentRevealed(obj);
     } else {
       revealed(board);
+      return;
     }
     setInitialState(array);
   }
@@ -46,13 +55,22 @@ export default function Game() {
     if(text === questionImages.name) {
       alert('You are correct')
       setIfAnswer(true);
+      setScore(score + 10);
+      setQuestionNumber(questionNumber + 1);
+      setCurrentRevealed({});
+      initBoard();
     }
   }
 
   return (
     <View style={styles.container}>
+
+      <View style={[styles.box, styles.box0]}>
+        <Text>{score}/100</Text>
+      </View>
+
       <View style={[styles.box, styles.box1]}>
-        <Text>Question 1</Text>
+        <Text>Question {questionNumber}</Text>
       </View>
 
 
@@ -146,26 +164,31 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
 
+  box0: {
+    flex:1,
+    backgroundColor: '#35D461'
+  },
+
   box1: {
     flex:1,
-    backgroundColor: 'yellow'
+    backgroundColor: '#F9E104'
   },
 
   box2: {
     flex:8,
-    backgroundColor: 'pink'
+    backgroundColor: '#F99D07'
   },
 
   box3: {
     flex:1,
-    backgroundColor: 'orange',
+    backgroundColor: '#882FF6',
     flexDirection: 'row',
 
   },
 
   box4: {
     flex:1,
-    backgroundColor: 'yellow',
+    backgroundColor: '#37B6F6',
     flexDirection: 'row'
   },
 
@@ -177,7 +200,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#37B6F6',
     padding: 10,
     borderRadius: 5,
   },
