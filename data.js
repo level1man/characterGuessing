@@ -26,19 +26,38 @@ const images = [
   {
     name: 'Elena',
     url: require('./assets/elena.jpeg'),
-  },
-
-
-  // require('./assets/aladdin.jpeg'),
-  // require('./assets/anna.jpeg'),
-  // require('./assets/mcstuffins.jpeg'),
-  // require('./assets/pooh.jpeg'),
-  // require('./assets/rapunzel.jpeg'),
-  // require('./assets/elena.jpeg'),
+  }
 ]
 
-// const images = {
-//   url: './assets/elsa_1.jpeg',
-// }
+// const images = [
+//   {
+//     name: 'Elsa',
+//     url: './assets/elsa.jpeg',
+//   },
+//   {
+//     name: 'Aladdin',
+//     url: './assets/aladdin.jpeg',
+//   },
+//   {
+//     name: 'Anna',
+//     url: './assets/anna.jpeg',
+//   },
+//   {
+//     name: 'Doc Mcstufiins',
+//     url: './assets/mcstuffins.jpeg',
+//   },
+//   {
+//     name: 'The Pooh',
+//     url:'./assets/pooh.jpeg',
+//   },
+//   {
+//     name: 'Rapunzel',
+//     url: './assets/rapunzel.jpeg',
+//   },
+//   {
+//     name: 'Elena',
+//     url: './assets/elena.jpeg',
+//   }
+// ]
 
 export default images
