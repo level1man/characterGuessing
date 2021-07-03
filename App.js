@@ -7,12 +7,9 @@ import Game from './components/Game.js'
 
 export default function App() {
   const [startGame, setStartGame] = useState(false);
-  // const [screen, setScreen] = useState('');
 
   const handlePress = () => {
-    console.log('here')
     setStartGame(true);
-    // setScreen(<Game />);
   }
 
   if(!startGame) {

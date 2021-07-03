@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity ,ImageBackground} from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground} from 'react-native';
 import images from '../data.js'
 
 const emptyBoard = [
@@ -12,8 +12,9 @@ const emptyBoard = [
 
 export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
-  const [questionImages, setQuestionImages] = useState(images[0].url);
+  const [questionImages, setQuestionImages] = useState(images[0]);
   const [currentRevealed, setCurrentRevealed] = useState({});
+  const [ifAnswer, setIfAnswer] = useState(false);
 
   useEffect(()=>{
     initBoard();
@@ -21,7 +22,7 @@ export default function Game() {
 
   const initBoard = () =>{
     let photoNum = Math.floor(Math.random()*7);
-    let img = images[photoNum].url;
+    let img = images[photoNum];
     setQuestionImages(img);
     revealed(emptyBoard);
   }
@@ -41,6 +42,13 @@ export default function Game() {
     setInitialState(array);
   }
 
+  const handleOnChange = (text) => {
+    if(text === questionImages.name) {
+      alert('You are correct')
+      setIfAnswer(true);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={[styles.box, styles.box1]}>
@@ -49,7 +57,7 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box2]}>
-       <ImageBackground source={questionImages} style={styles.image}>
+       <ImageBackground source={questionImages.url} style={styles.image}>
         <View style={{flexDirection: "row"}}>
           {initialState[0].map((item, index)=> {
             if(item === 0 ) {
@@ -101,29 +109,14 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box3]}>
-        <TouchableOpacity
-          // onPress={()=>revealed(initialState)}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Pooh</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          // onPress={()=>revealed(initialState)}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Aladdin</Text>
-        </TouchableOpacity>
+        <TextInput
+          style={{height:40}}
+          placeholder='Type your guess HERE'
+          onChangeText={(text) => handleOnChange(text)} />
       </View>
 
       <View style={[styles.box, styles.box4]}>
-        <TouchableOpacity
-          // onPress={()=>revealed(initialState)}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Elsa</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          // onPress={()=>revealed(initialState)}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Anna</Text>
-        </TouchableOpacity>
+
       </View>
 
       <View style={[styles.box, styles.box5]}>
