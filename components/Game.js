@@ -38,6 +38,7 @@ export default function Game() {
     let photoNum = Math.floor(Math.random()*7);
     let img = images[photoNum];
     let used = {...usedImages};
+    setNext(false);
 
     var board = emptyBoard.map(function(arr) {
       return arr.slice();
@@ -75,10 +76,11 @@ export default function Game() {
   }
 
   const handleOnChange = (text) => {
-    if(text === questionImages.name) {
+    if(text.toLowerCase() === questionImages.name.toLowerCase()) {
       alert('You are correct')
       // setIfAnswer(true);
       setScore(score + 10);
+      setInitialState(filledBoard);
       setNext(true);
 
     }
@@ -94,14 +96,10 @@ export default function Game() {
   return (
     <View style={styles.container}>
 
-      <View style={[styles.box, styles.box0]}>
-        <Text>{score}/100</Text>
-      </View>
-
       <View style={[styles.box, styles.box1]}>
+        <Text>{score}/100</Text>
         <Text>Question {questionNumber}</Text>
       </View>
-
 
       <View style={[styles.box, styles.box2]}>
        <ImageBackground source={questionImages.url} style={styles.image}>
@@ -167,25 +165,30 @@ export default function Game() {
       </View>
 
       <View style={[styles.box, styles.box5]}>
-       {next === true ?
-        <TouchableOpacity
-          onPress={()=>handleNext()}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Next</Text>
-        </TouchableOpacity> :
-        [tip === 0 ?
+        {tip === 0 ?
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
           style ={[styles.button, styles.disabledButton]}
           disabled = {true}>
-          <Text style={styles.buttonText}>No More Revealed</Text>
+          <Text style={styles.buttonText}>No &#128161;</Text>
         </TouchableOpacity> :
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
           style ={styles.button}>
-          <Text style={styles.buttonText}>Reavel MORE ({tip})</Text>
+          <Text style={styles.buttonText}>&#128161;({tip})</Text>
         </TouchableOpacity>
-        ]}
+        }
+        {next === true ?
+          <TouchableOpacity
+            onPress={()=>handleNext()}
+            style ={styles.button}>
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity> :
+            <TouchableOpacity
+            onPress={()=>handleNext()}
+            style ={[styles.button, {display:'none'}]}>
+            <Text style={styles.buttonText}>Next</Text>
+          </TouchableOpacity>}
       </View>
 
       <StatusBar style="auto" />
@@ -207,14 +210,13 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
 
-  box0: {
-    flex:0.5,
-    backgroundColor: '#35D461'
-  },
-
   box1: {
     flex:0.5,
-    backgroundColor: '#F9E104'
+    backgroundColor: '#F9E104',
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: '10px',
+    paddingRight: '10px'
   },
 
   box2: {
@@ -239,7 +241,10 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor: 'grey',
     width: '100%',
-
+    flexDirection: 'row',
+    justifyContent: "space-between",
+    paddingLeft: '10px',
+    paddingRight: '10px'
   },
 
   button: {
@@ -256,15 +261,15 @@ const styles = StyleSheet.create({
   },
   tile: {
     borderWidth: 1,
-    width: 90,
-    height: 90,
+    width: 85,
+    height: 85,
     backgroundColor:'green',
   },
 
   revealed: {
     borderWidth: 1,
-    width: 90,
-    height: 90,
+    width: 85,
+    height: 85,
   },
 
   image: {
