@@ -261,6 +261,7 @@ const styles = StyleSheet.create({
   },
   tile: {
     borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
     width: 85,
     height: 85,
     backgroundColor:'green',
@@ -268,6 +269,7 @@ const styles = StyleSheet.create({
 
   revealed: {
     borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
     width: 85,
     height: 85,
   },
