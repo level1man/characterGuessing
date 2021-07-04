@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground} from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground, SafeAreaView} from 'react-native';
 import images from '../data.js'
 
 const emptyBoard = [
@@ -82,7 +82,6 @@ export default function Game() {
       setScore(score + 10);
       setInitialState(filledBoard);
       setNext(true);
-
     }
   }
 
@@ -94,7 +93,7 @@ export default function Game() {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <View style={[styles.box, styles.box1]}>
         <Text>{score}/100</Text>
@@ -154,17 +153,45 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box3]}>
-        <TextInput
+        {/* <TextInput
           style={{height:40}}
           placeholder='Type your guess HERE'
-          onChangeText={(text) => handleOnChange(text)} />
+          onChangeText={(text) => handleOnChange(text)} /> */}
+
+                <TouchableOpacity
+                  // onPress={}
+                  style ={styles.choiceButton}
+                >
+                <Text style={styles.buttonText}>A</Text>
+              </TouchableOpacity>
+
+
+              <TouchableOpacity
+                // onPress={}
+                style ={styles.choiceButton}
+               >
+                <Text style={styles.buttonText}>B</Text>
+              </TouchableOpacity>
+
+
+              <TouchableOpacity
+                // onPress={}
+                style ={styles.choiceButton}
+               >
+                <Text style={styles.buttonText}>C</Text>
+              </TouchableOpacity>
+
+
+              <TouchableOpacity
+                // onPress={}
+                style ={styles.choiceButton}
+              >
+                <Text style={styles.buttonText}>D</Text>
+              </TouchableOpacity>
+
       </View>
 
       <View style={[styles.box, styles.box4]}>
-
-      </View>
-
-      <View style={[styles.box, styles.box5]}>
         {tip === 0 ?
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
@@ -192,7 +219,7 @@ export default function Game() {
       </View>
 
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -215,41 +242,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9E104',
     flexDirection: 'row',
     justifyContent: "space-between",
-    paddingLeft: '10px',
-    paddingRight: '10px'
+    alignItems: "center",
+    paddingLeft: 10,
+    paddingRight: 10
   },
-
   box2: {
     flex:8,
     backgroundColor: '#F99D07'
   },
-
   box3: {
-    flex:1,
+    flex:2,
     backgroundColor: '#882FF6',
-    flexDirection: 'row',
-
+    flexDirection: 'column',
+    justifyContent: "space-between"
   },
-
   box4: {
-    flex:1,
-    backgroundColor: '#37B6F6',
-    flexDirection: 'row'
-  },
-
-  box5: {
     flex:1,
     backgroundColor: 'grey',
     width: '100%',
     flexDirection: 'row',
     justifyContent: "space-between",
-    paddingLeft: '10px',
-    paddingRight: '10px'
+    paddingLeft: 10,
+    paddingRight: 10
   },
-
   button: {
     backgroundColor: '#37B6F6',
-    padding: 10,
+    padding: 5,
     borderRadius: 5,
   },
   buttonText: {
@@ -259,19 +277,25 @@ const styles = StyleSheet.create({
   disabledButton: {
     backgroundColor: "#CDCDCD"
   },
+  choiceButton: {
+    width:"100%",
+    justifyContent:"center",
+    // paddingLeft: 20,
+    backgroundColor:"yellow"
+  },
   tile: {
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
-    width: 85,
-    height: 85,
+    width: 90,
+    height: 90,
     backgroundColor:'green',
   },
 
   revealed: {
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
-    width: 85,
-    height: 85,
+    width: 90,
+    height: 90,
   },
 
   image: {
