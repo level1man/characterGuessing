@@ -23,11 +23,12 @@ export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
   const [questionImages, setQuestionImages] = useState(images[0]);
   const [currentRevealed, setCurrentRevealed] = useState({});
-  const [ifAnswer, setIfAnswer] = useState(false);
+  // const [ifAnswer, setIfAnswer] = useState(false);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [usedImages, setUsedImages] = useState({});
   const [tip, setTip] = useState(4);
+  const [next, setNext] = useState(false);
 
   useEffect(()=>{
     initBoard();
@@ -76,13 +77,18 @@ export default function Game() {
   const handleOnChange = (text) => {
     if(text === questionImages.name) {
       alert('You are correct')
-      setIfAnswer(true);
+      // setIfAnswer(true);
       setScore(score + 10);
-      setQuestionNumber(questionNumber + 1);
-      setCurrentRevealed({});
-      initBoard();
-      setTip(3);
+      setNext(true);
+
     }
+  }
+
+  const handleNext = () => {
+    setQuestionNumber(questionNumber + 1);
+    setCurrentRevealed({});
+    initBoard();
+    setTip(3);
   }
 
   return (
@@ -161,19 +167,25 @@ export default function Game() {
       </View>
 
       <View style={[styles.box, styles.box5]}>
-        {tip === 0 ?
+       {next === true ?
         <TouchableOpacity
-        onPress={()=>revealed(initialState)}
-        style ={[styles.button, styles.disabledButton]}
-        disabled = {true}>
-        <Text style={styles.buttonText}>No More Revealed</Text>
-      </TouchableOpacity> :
+          onPress={()=>handleNext()}
+          style ={styles.button}>
+          <Text style={styles.buttonText}>Next</Text>
+        </TouchableOpacity> :
+        [tip === 0 ?
+        <TouchableOpacity
+          onPress={()=>revealed(initialState)}
+          style ={[styles.button, styles.disabledButton]}
+          disabled = {true}>
+          <Text style={styles.buttonText}>No More Revealed</Text>
+        </TouchableOpacity> :
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
           style ={styles.button}>
           <Text style={styles.buttonText}>Reavel MORE ({tip})</Text>
         </TouchableOpacity>
-        }
+        ]}
       </View>
 
       <StatusBar style="auto" />
