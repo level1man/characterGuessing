@@ -8,7 +8,16 @@ const emptyBoard = [
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
-  [0, 0, 0, 0]];
+  [0, 0, 0, 0]
+];
+
+const filledBoard = [
+  [1, 1, 1, 1],
+  [1, 1, 1, 1],
+  [1, 1, 1, 1],
+  [1, 1, 1, 1],
+  [1, 1, 1, 1]
+]
 
 export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
@@ -18,6 +27,7 @@ export default function Game() {
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [usedImages, setUsedImages] = useState({});
+  const [tip, setTip] = useState(4);
 
   useEffect(()=>{
     initBoard();
@@ -51,14 +61,16 @@ export default function Game() {
       return arr.slice();
     });
     array[i][j] = 1;
-    if(!currentRevealed[[i,j]]){
-      obj[[i,j]] = true;
-      setCurrentRevealed(obj);
-    } else {
-      revealed(board);
-      return;
-    }
-    setInitialState(array);
+    // add tip count
+      if(!currentRevealed[[i,j]]){
+        obj[[i,j]] = true;
+        setCurrentRevealed(obj);
+      } else {
+        revealed(board);
+        return;
+      }
+      setTip(tip-1);
+      setInitialState(array);
   }
 
   const handleOnChange = (text) => {
@@ -69,6 +81,7 @@ export default function Game() {
       setQuestionNumber(questionNumber + 1);
       setCurrentRevealed({});
       initBoard();
+      setTip(3);
     }
   }
 
@@ -148,11 +161,19 @@ export default function Game() {
       </View>
 
       <View style={[styles.box, styles.box5]}>
+        {tip === 0 ?
+        <TouchableOpacity
+        onPress={()=>revealed(initialState)}
+        style ={[styles.button, styles.disabledButton]}
+        disabled = {true}>
+        <Text style={styles.buttonText}>No More Revealed</Text>
+      </TouchableOpacity> :
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
           style ={styles.button}>
-          <Text style={styles.buttonText}>Reavel MORE</Text>
+          <Text style={styles.buttonText}>Reavel MORE ({tip})</Text>
         </TouchableOpacity>
+        }
       </View>
 
       <StatusBar style="auto" />
@@ -175,12 +196,12 @@ const styles = StyleSheet.create({
   },
 
   box0: {
-    flex:1,
+    flex:0.5,
     backgroundColor: '#35D461'
   },
 
   box1: {
-    flex:1,
+    flex:0.5,
     backgroundColor: '#F9E104'
   },
 
@@ -217,6 +238,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     color: 'white',
+  },
+  disabledButton: {
+    backgroundColor: "#CDCDCD"
   },
   tile: {
     borderWidth: 1,
