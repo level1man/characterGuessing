@@ -130,8 +130,8 @@ export default function Game() {
     <SafeAreaView style={styles.container}>
 
       <View style={[styles.box, styles.box1]}>
-        <Text>{score}/100</Text>
         <Text>Question {questionNumber}</Text>
+        <Text>{score}/100</Text>
       </View>
 
       <View style={[styles.box, styles.box2]}>
@@ -187,7 +187,7 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box3]}>
-          {questionImages.answers.map((item, index) => {
+          {/* {questionImages.answers.map((item, index) => {
             return <TouchableOpacity
             onPress={() => handleChoices(item)}
             style ={styles.choiceButton}
@@ -195,8 +195,34 @@ export default function Game() {
             key={index}>
               <Text style={styles.choiceText}>{item}</Text>
             </TouchableOpacity>
-          })}
+          })} */}
+            <TouchableOpacity
+              onPress={() => handleChoices(questionImages.answers[0])}
+              style ={styles.choiceButton}
+              disabled= {choiceButton}>
+                <Text style={styles.choiceText}>{questionImages.answers[0]}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleChoices(questionImages.answers[1])}
+              style ={styles.choiceButton}
+              disabled= {choiceButton}>
+                <Text style={styles.choiceText}>{questionImages.answers[1]}</Text>
+            </TouchableOpacity>
+      </View>
 
+      <View style={[styles.box, styles.box3]}>
+            <TouchableOpacity
+                onPress={() => handleChoices(questionImages.answers[2])}
+                style ={styles.choiceButton}
+                disabled= {choiceButton}>
+                  <Text style={styles.choiceText}>{questionImages.answers[2]}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleChoices(questionImages.answers[3])}
+                style ={styles.choiceButton}
+                disabled= {choiceButton}>
+                  <Text style={styles.choiceText}>{questionImages.answers[3]}</Text>
+              </TouchableOpacity>
       </View>
 
       <View style={[styles.box, styles.box4]}>
@@ -240,7 +266,7 @@ const styles = StyleSheet.create({
 
   box1: {
     flex:0.5,
-    backgroundColor: '#F9E104',
+    backgroundColor: '#F2EB8D',
     flexDirection: 'row',
     justifyContent: "space-between",
     alignItems: "center",
@@ -249,17 +275,17 @@ const styles = StyleSheet.create({
   },
   box2: {
     flex:8,
-    backgroundColor: '#F99D07'
+    backgroundColor: '#ECC1D9'
   },
   box3: {
-    flex:2,
-    backgroundColor: '#882FF6',
-    flexDirection: 'column',
-    justifyContent: "space-between"
+    flex:1,
+    backgroundColor: '#ECC1D9',
+    flexDirection: 'row',
+    justifyContent: "space-evenly"
   },
   box4: {
-    flex:1,
-    backgroundColor: 'grey',
+    flex:0.8,
+    backgroundColor: '#F2EB8D',
     width: '100%',
     flexDirection: 'row',
     justifyContent: "space-between",
@@ -279,21 +305,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#CDCDCD"
   },
   choiceButton: {
-    width:"95%",
+    width:"45%",
+    padding: 10,
+    // borderWidth:1,
+    borderRadius: 5,
     justifyContent:"center",
-    backgroundColor:"yellow",
-    textAlign: "center"
+    // backgroundColor:"rgba(255, 255, 255, 0.3)",
+    backgroundColor:"#ED657E",
+    alignItems: "center"
   },
   choiceText: {
-    fontSize: 20,
-    color: 'black',
+    fontSize: 18,
+    padding: 2,
+    color: 'white',
   },
   tile: {
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.3)",
     width: 90,
     height: 90,
-    backgroundColor:'green',
+    backgroundColor:'#E2C7E8',
   },
 
   revealed: {
