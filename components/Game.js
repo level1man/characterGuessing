@@ -19,7 +19,7 @@ const filledBoard = [
   [1, 1, 1, 1]
 ]
 
-const images = data.slice();
+var images = data.slice();
 
 export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
@@ -27,35 +27,13 @@ export default function Game() {
   const [currentRevealed, setCurrentRevealed] = useState({});
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
-  // const [usedImages, setUsedImages] = useState({});
   const [tip, setTip] = useState(4);
   const [next, setNext] = useState(false);
-  const [numberOfImages, SetNumberOfImages] = useState(20)
+  const [numberOfImages, setNumberOfImages] = useState(20)
 
   useEffect(()=>{
     initBoard();
   },[])
-
-  // const initBoard = () =>{
-  //   let photoNum = Math.floor(Math.random()*20);
-  //   let img = images[photoNum];
-  //   let used = {...usedImages};
-  //   setNext(false);
-
-  //   var board = emptyBoard.map(function(arr) {
-  //     return arr.slice();
-  //   });
-
-  //   if(!used[photoNum]) {
-  //     used[photoNum] = true;
-  //     setUsedImages(used);
-  //     setQuestionImages(img);
-  //     revealed(board);
-  //   } else {
-  //     initBoard();
-  //     return;
-  //   }
-  // }
 
   const initBoard = () =>{
     let photoNum = Math.floor(Math.random()*numberOfImages);
@@ -68,9 +46,8 @@ export default function Game() {
 
     setQuestionImages(img);
     revealed(board);
-    SetNumberOfImages(numberOfImages-1);
+    setNumberOfImages(numberOfImages-1);
     images.splice(photoNum,1);
-    console.log(images.length);
 
   }
 
@@ -82,7 +59,6 @@ export default function Game() {
       return arr.slice();
     });
     array[i][j] = 1;
-    // add tip count
       if(!currentRevealed[[i,j]]){
         obj[[i,j]] = true;
         setCurrentRevealed(obj);
@@ -95,10 +71,8 @@ export default function Game() {
   }
 
   const handleChoices = (text) => {
-    console.log(text);
     if(text === questionImages.name) {
       alert('You are correct')
-      // setIfAnswer(true);
       setScore(score + 10);
       setInitialState(filledBoard);
       setNext(true);
@@ -112,6 +86,32 @@ export default function Game() {
     setTip(3);
   }
 
+  const handleReplay = () => {
+    images = data.slice();
+    setInitialState(emptyBoard);
+    setNumberOfImages(20);
+    setQuestionNumber(1);
+    setCurrentRevealed({});
+    setScore(0);
+    initBoard();
+    setTip(3);
+  }
+
+  if(questionNumber > 10) {
+    return (
+      <View style={styles.container}>
+        <Text>Game Over</Text>
+        <Text>Your Score:</Text>
+        <Text>{score}</Text>
+        <TouchableOpacity
+          onPress={()=>handleReplay()}
+          style ={styles.button}>
+          <Text style={styles.buttonText}>Play Agian</Text>
+          </TouchableOpacity>
+        <StatusBar style="auto" />
+      </View>
+    );
+  } else {
   return (
     <SafeAreaView style={styles.container}>
 
@@ -218,7 +218,7 @@ export default function Game() {
       <StatusBar style="auto" />
     </SafeAreaView>
   );
-}
+}}
 
 const styles = StyleSheet.create({
   container: {
