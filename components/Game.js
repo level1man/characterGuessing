@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   button: {
-    backgroundColor: '#37B6F6',
+    backgroundColor: '#009CA4',
     padding: 5,
     borderRadius: 5,
   },
@@ -324,7 +324,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 255, 255, 0.3)",
     width: 90,
     height: 90,
-    backgroundColor:'#E2C7E8',
+    // backgroundColor:'#E2C7E8',
+    backgroundColor:'#FA9CC3',
   },
 
   revealed: {
