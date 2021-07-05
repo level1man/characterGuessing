@@ -23,20 +23,22 @@ var images = data.slice();
 
 export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
-  const [questionImages, setQuestionImages] = useState(images[0]);
-  const [currentRevealed, setCurrentRevealed] = useState({});
+  const [questionImages, setQuestionImages] = useState(data[0]);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [tip, setTip] = useState(4);
   const [next, setNext] = useState(false);
+  const [choiceButton, setChoiceButton] = useState(false);
+  const [tipButton, setTipButton] = useState(false);
   const [numberOfImages, setNumberOfImages] = useState(20)
 
   useEffect(()=>{
-    initBoard();
+    initBoard(numberOfImages);
   },[])
 
-  const initBoard = () =>{
-    let photoNum = Math.floor(Math.random()*numberOfImages);
+  const initBoard = (allImages) =>{
+    let photoNum = Math.floor(Math.random()*allImages);
+    console.log(photoNum);
     let img = images[photoNum];
     setNext(false);
 
@@ -46,55 +48,67 @@ export default function Game() {
 
     setQuestionImages(img);
     revealed(board);
-    setNumberOfImages(numberOfImages-1);
+    allImages -= 1;
+    setNumberOfImages(allImages);
     images.splice(photoNum,1);
 
   }
 
   const revealed = (board) => {
-    let obj = {...currentRevealed}
+    // let obj = {...currentRevealed}
     let i = Math.floor(Math.random()*5);
     let j = Math.floor(Math.random()*4);
     var array = board.map(function(arr) {
       return arr.slice();
     });
-    array[i][j] = 1;
-      if(!currentRevealed[[i,j]]){
-        obj[[i,j]] = true;
-        setCurrentRevealed(obj);
-      } else {
-        revealed(board);
-        return;
+    if(array[i][j] === 0) {
+      array[i][j] = 1;
+      if(tip !== 0) {
+        setTip(tip-1);
       }
-      setTip(tip-1);
+      if(tip === 1) {
+        setTipButton(true);
+      }
       setInitialState(array);
+    } else {
+      console.log(tip, i, j)
+      revealed(array);
+    }
   }
 
   const handleChoices = (text) => {
     if(text === questionImages.name) {
       alert('You are correct')
       setScore(score + 10);
-      setInitialState(filledBoard);
-      setNext(true);
+    } else {
+      alert('WRONG Answer!');
     }
+    setChoiceButton(true);
+    setTipButton(true);
+    setInitialState(filledBoard);
+    setNext(true);
   }
 
   const handleNext = () => {
     setQuestionNumber(questionNumber + 1);
-    setCurrentRevealed({});
-    initBoard();
+    setChoiceButton(false);
+    initBoard(numberOfImages);
+    // setCurrentRevealed({});
     setTip(3);
+    setTipButton(false);
   }
 
   const handleReplay = () => {
     images = data.slice();
+    console.log(images.length)
     setInitialState(emptyBoard);
     setNumberOfImages(20);
     setQuestionNumber(1);
-    setCurrentRevealed({});
+    setChoiceButton(false);
     setScore(0);
-    initBoard();
+    initBoard(20);
     setTip(3);
+    setTipButton(false);
   }
 
   if(questionNumber > 10) {
@@ -173,14 +187,11 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box3]}>
-        {/* <TextInput
-          style={{height:40}}
-          placeholder='Type your guess HERE'
-          onChangeText={(text) => handleOnChange(text)} /> */}
           {questionImages.answers.map((item, index) => {
             return <TouchableOpacity
             onPress={() => handleChoices(item)}
             style ={styles.choiceButton}
+            disabled= {choiceButton}
             key={index}>
               <Text style={styles.choiceText}>{item}</Text>
             </TouchableOpacity>
@@ -189,19 +200,12 @@ export default function Game() {
       </View>
 
       <View style={[styles.box, styles.box4]}>
-        {tip === 0 ?
         <TouchableOpacity
           onPress={()=>revealed(initialState)}
-          style ={[styles.button, styles.disabledButton]}
-          disabled = {true}>
-          <Text style={styles.buttonText}>No &#128161;</Text>
-        </TouchableOpacity> :
-        <TouchableOpacity
-          onPress={()=>revealed(initialState)}
-          style ={styles.button}>
+          style ={styles.button}
+          disabled = {tipButton}>
           <Text style={styles.buttonText}>&#128161;({tip})</Text>
         </TouchableOpacity>
-        }
         {next === true ?
           <TouchableOpacity
             onPress={()=>handleNext()}
