@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground, SafeAreaView} from 'react-native';
-import images from '../data.js'
+import data from '../data.js'
 
 const emptyBoard = [
   [0, 0, 0, 0],
@@ -19,40 +19,59 @@ const filledBoard = [
   [1, 1, 1, 1]
 ]
 
+const images = data.slice();
+
 export default function Game() {
   const [initialState, setInitialState] = useState(emptyBoard);
   const [questionImages, setQuestionImages] = useState(images[0]);
   const [currentRevealed, setCurrentRevealed] = useState({});
-  // const [ifAnswer, setIfAnswer] = useState(false);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1);
-  const [usedImages, setUsedImages] = useState({});
+  // const [usedImages, setUsedImages] = useState({});
   const [tip, setTip] = useState(4);
   const [next, setNext] = useState(false);
+  const [numberOfImages, SetNumberOfImages] = useState(20)
 
   useEffect(()=>{
     initBoard();
   },[])
 
+  // const initBoard = () =>{
+  //   let photoNum = Math.floor(Math.random()*20);
+  //   let img = images[photoNum];
+  //   let used = {...usedImages};
+  //   setNext(false);
+
+  //   var board = emptyBoard.map(function(arr) {
+  //     return arr.slice();
+  //   });
+
+  //   if(!used[photoNum]) {
+  //     used[photoNum] = true;
+  //     setUsedImages(used);
+  //     setQuestionImages(img);
+  //     revealed(board);
+  //   } else {
+  //     initBoard();
+  //     return;
+  //   }
+  // }
+
   const initBoard = () =>{
-    let photoNum = Math.floor(Math.random()*7);
+    let photoNum = Math.floor(Math.random()*numberOfImages);
     let img = images[photoNum];
-    let used = {...usedImages};
     setNext(false);
 
     var board = emptyBoard.map(function(arr) {
       return arr.slice();
     });
 
-    if(!used[photoNum]) {
-      used[photoNum] = true;
-      setUsedImages(used);
-      setQuestionImages(img);
-      revealed(board);
-    } else {
-      initBoard();
-      return;
-    }
+    setQuestionImages(img);
+    revealed(board);
+    SetNumberOfImages(numberOfImages-1);
+    images.splice(photoNum,1);
+    console.log(images.length);
+
   }
 
   const revealed = (board) => {
@@ -75,8 +94,9 @@ export default function Game() {
       setInitialState(array);
   }
 
-  const handleOnChange = (text) => {
-    if(text.toLowerCase() === questionImages.name.toLowerCase()) {
+  const handleChoices = (text) => {
+    console.log(text);
+    if(text === questionImages.name) {
       alert('You are correct')
       // setIfAnswer(true);
       setScore(score + 10);
@@ -157,37 +177,14 @@ export default function Game() {
           style={{height:40}}
           placeholder='Type your guess HERE'
           onChangeText={(text) => handleOnChange(text)} /> */}
-
-                <TouchableOpacity
-                  // onPress={}
-                  style ={styles.choiceButton}
-                >
-                <Text style={styles.buttonText}>A</Text>
-              </TouchableOpacity>
-
-
-              <TouchableOpacity
-                // onPress={}
-                style ={styles.choiceButton}
-               >
-                <Text style={styles.buttonText}>B</Text>
-              </TouchableOpacity>
-
-
-              <TouchableOpacity
-                // onPress={}
-                style ={styles.choiceButton}
-               >
-                <Text style={styles.buttonText}>C</Text>
-              </TouchableOpacity>
-
-
-              <TouchableOpacity
-                // onPress={}
-                style ={styles.choiceButton}
-              >
-                <Text style={styles.buttonText}>D</Text>
-              </TouchableOpacity>
+          {questionImages.answers.map((item, index) => {
+            return <TouchableOpacity
+            onPress={() => handleChoices(item)}
+            style ={styles.choiceButton}
+            key={index}>
+              <Text style={styles.choiceText}>{item}</Text>
+            </TouchableOpacity>
+          })}
 
       </View>
 
@@ -278,10 +275,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#CDCDCD"
   },
   choiceButton: {
-    width:"100%",
+    width:"95%",
     justifyContent:"center",
-    // paddingLeft: 20,
-    backgroundColor:"yellow"
+    backgroundColor:"yellow",
+    textAlign: "center"
+  },
+  choiceText: {
+    fontSize: 20,
+    color: 'black',
   },
   tile: {
     borderWidth: 1,

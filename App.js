@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity ,ImageBackground} from 'react-native';
-import images from './data.js'
 import Game from './components/Game.js'
 
 
