@@ -14,7 +14,7 @@ export default function App() {
   if(!startGame) {
     return (
       <View style={styles.container}>
-        <Text>What is it?</Text>
+        <Text style={styles.title}>What is it?</Text>
         <TouchableOpacity
           onPress={()=>handlePress()}
           style ={styles.button}>
@@ -39,9 +39,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title:{
+    paddingBottom: 20,
+  },
   button: {
     backgroundColor: 'blue',
-    padding: 20,
+    padding: 10,
     borderRadius: 5,
   },
   buttonText: {
