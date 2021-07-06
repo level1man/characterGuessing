@@ -1,7 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground, SafeAreaView} from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity ,ImageBackground, SafeAreaView, Alert} from 'react-native';
 import data from '../data.js'
+import AppLoading from 'expo-app-loading';
+import { useFonts, Pacifico_400Regular } from '@expo-google-fonts/pacifico';
+import background from '../assets/endBackground.png';
 
 const emptyBoard = [
   [0, 0, 0, 0],
@@ -30,7 +33,7 @@ export default function Game() {
   const [next, setNext] = useState(false);
   const [choiceButton, setChoiceButton] = useState(false);
   const [tipButton, setTipButton] = useState(false);
-  const [numberOfImages, setNumberOfImages] = useState(20)
+  const [numberOfImages, setNumberOfImages] = useState(20);
 
   useEffect(()=>{
     initBoard(numberOfImages);
@@ -38,7 +41,6 @@ export default function Game() {
 
   const initBoard = (allImages) =>{
     let photoNum = Math.floor(Math.random()*allImages);
-    console.log(photoNum);
     let img = images[photoNum];
     setNext(false);
 
@@ -78,10 +80,13 @@ export default function Game() {
 
   const handleChoices = (text) => {
     if(text === questionImages.name) {
-      alert('You are correct')
+      // alert('You are correct')
+      winAlert();
       setScore(score + 10);
+      //setModalVisible(!modalVisible);
     } else {
-      alert('WRONG Answer!');
+      loseAlert();
+      // alert('WRONG Answer!');
     }
     setChoiceButton(true);
     setTipButton(true);
@@ -100,7 +105,6 @@ export default function Game() {
 
   const handleReplay = () => {
     images = data.slice();
-    console.log(images.length)
     setInitialState(emptyBoard);
     setNumberOfImages(20);
     setQuestionNumber(1);
@@ -111,19 +115,35 @@ export default function Game() {
     setTipButton(false);
   }
 
+  const winAlert = () =>
+    Alert.alert(
+      'You are CORRECT',
+      'got 10 points',
+      [{text: 'OK'}]
+    )
+
+  const loseAlert = () =>
+  Alert.alert(
+    'You are WRONG',
+    'got 0 points',
+    [{text: 'OK'}]
+  )
+
   if(questionNumber > 10) {
     return (
-      <View style={styles.container}>
-        <Text>Game Over</Text>
-        <Text>Your Score:</Text>
-        <Text>{score}</Text>
-        <TouchableOpacity
-          onPress={()=>handleReplay()}
-          style ={styles.button}>
-          <Text style={styles.buttonText}>Play Agian</Text>
-          </TouchableOpacity>
-        <StatusBar style="auto" />
-      </View>
+      <SafeAreaView style={[styles.container, styles.end]}>
+        <ImageBackground source={background} style={styles.background}>
+          <Text style={styles.overTitile}>Game Over</Text>
+          <Text>Your Score:</Text>
+          <Text style={styles.score}>{score}</Text>
+          <TouchableOpacity
+            onPress={()=>handleReplay()}
+            style ={[styles.button,styles.againButton]}>
+            <Text style={styles.buttonText}>Play Agian</Text>
+            </TouchableOpacity>
+          <StatusBar style="auto" />
+        </ImageBackground>
+      </SafeAreaView>
     );
   } else {
   return (
@@ -187,15 +207,6 @@ export default function Game() {
 
 
       <View style={[styles.box, styles.box3]}>
-          {/* {questionImages.answers.map((item, index) => {
-            return <TouchableOpacity
-            onPress={() => handleChoices(item)}
-            style ={styles.choiceButton}
-            disabled= {choiceButton}
-            key={index}>
-              <Text style={styles.choiceText}>{item}</Text>
-            </TouchableOpacity>
-          })} */}
             <TouchableOpacity
               onPress={() => handleChoices(questionImages.answers[0])}
               style ={styles.choiceButton}
@@ -254,8 +265,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  end:{
+    backgroundColor:'#3a377a'
+  },
+  background:{
+    flex: 1,
+    resizeMode: "cover",
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "flex-end"
   },
 
   box: {
@@ -293,7 +313,7 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   button: {
-    backgroundColor: '#009CA4',
+    backgroundColor: '#9C89BB',
     padding: 5,
     borderRadius: 5,
   },
@@ -312,7 +332,7 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     // backgroundColor:"rgba(255, 255, 255, 0.3)",
     backgroundColor:"#ED657E",
-    alignItems: "center"
+    alignItems: "center",
   },
   choiceText: {
     fontSize: 18,
@@ -327,6 +347,10 @@ const styles = StyleSheet.create({
     // backgroundColor:'#E2C7E8',
     backgroundColor:'#FA9CC3',
   },
+  againButton: {
+    marginBottom: 100,
+    marginTop: 30
+  },
 
   revealed: {
     borderWidth: 1,
@@ -339,4 +363,22 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     justifyContent: "center"
   },
+  overTitile:{
+    fontFamily:'Pacifico_400Regular',
+    fontSize: 50,
+    paddingLeft: 10,
+    paddingRight: 15,
+    color:'#ffbe0b',
+    textShadowColor: '#FFFFFF',
+    textShadowOffset:{width:2, height:2},
+    textShadowRadius:1,
+  },
+  score:{
+    fontFamily:'Pacifico_400Regular',
+    fontSize: 50,
+    textShadowColor: '#FFFFFF',
+    textShadowOffset:{width:2, height:2},
+    textShadowRadius:1,
+    color:'#832161'
+  }
 });
