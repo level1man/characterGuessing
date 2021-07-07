@@ -80,13 +80,13 @@ export default function Game() {
 
   const handleChoices = (text) => {
     if(text === questionImages.name) {
-      // alert('You are correct')
+
       winAlert();
       setScore(score + 10);
-      //setModalVisible(!modalVisible);
+
     } else {
       loseAlert();
-      // alert('WRONG Answer!');
+
     }
     setChoiceButton(true);
     setTipButton(true);
