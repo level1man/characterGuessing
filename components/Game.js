@@ -139,7 +139,7 @@ export default function Game() {
           <TouchableOpacity
             onPress={()=>handleReplay()}
             style ={[styles.button,styles.againButton]}>
-            <Text style={styles.buttonText}>Play Agian</Text>
+            <Text style={styles.buttonText}>Play Again</Text>
             </TouchableOpacity>
           <StatusBar style="auto" />
         </ImageBackground>
